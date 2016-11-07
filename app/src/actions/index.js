@@ -21,7 +21,10 @@ export function fetchTweets(q, resultType) {
     const config = {
       method: 'post',
       url,
-      data: { query: 'query getTweets($q:String, $resultType: String){ tweets(q:$q, resultType: $resultType) {text} }', variables: { q, resultType } },
+      data: {
+        query: 'query getTweets($q:String, $resultType: String){ tweets(q:$q, resultType: $resultType) {text} }',
+        variables: { q: encodeURIComponent(q), resultType }
+      },
       headers,
     };
 
