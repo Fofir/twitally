@@ -12,7 +12,7 @@ The application consists of an API and a client side application:
 
 ### setup
 
-`$ npm i && cd app && npm i`
+`$ npm i && cd app && npm i && cd ..`
 
 ### development
 
