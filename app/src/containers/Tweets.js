@@ -52,7 +52,7 @@ const tallyTweets = (tweets, q) => tweets.reduce((tally, tweet) => {
   const update = { ...tally };
   const words = tweet.text.split(' ');
   const indexOfVote = words.indexOf(q) + 1;
-  const vote = words[indexOfVote];
+  const vote = words.slice(indexOfVote, words.length).join(' ');
 
   if (vote) {
     if (!update[vote]) {
