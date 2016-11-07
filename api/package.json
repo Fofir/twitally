@@ -1,0 +1,14 @@
+{
+  "name": "twitally-api",
+  "version": "0.0.1",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:fofir/tweetie.git"
+  },
+  "dependencies": {
+    "graphql": "0.6.2",
+    "require-clean": "0.1.3",
+    "twit": "^2.2.5"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "name": "twitally",
+  "version": "0.0.1",
+  "description": "",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:fofir/twitally.git"
+  },
+  "main": "handler.js",
+  "scripts": {
+    "dev": "nf start -p 3000",
+    "client": "cd app && npm start",
+    "server": "NODE_ENV=dev nodemon foundation/dev-server --exec babel-node --ignore 'app/*'",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:client": "cd app && npm run build",
+    "deploy:client": "npm run build:client && aws s3 sync app/build s3://twitally-client/",
+    "build:api": "NODE_ENV=production babel --out-dir='api/graphql' --ignore='__tests__/*' ./graphql",
+    "build:api:node_modules": "cd api && npm install && cd ..",
+    "deploy:api:stage": "npm run build:api && npm run build:api:node_modules && cd api && serverless deploy",
+    "deploy:api:production": "npm run build:api && npm run build:api:node_modules && cd api && serverless --stage=production deploy",
+    "deploy": "npm run deploy:api:production && npm run deploy:client"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "foreman": "^2.0.0",
+    "graphql": "^0.7.2",
+    "twit": "^2.2.5"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-eslint": "^7.1.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "nodemon": "^1.11.0",
+    "path": "^0.12.7"
+  }
+}

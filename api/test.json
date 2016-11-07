@@ -1,0 +1,7 @@
+{
+	"event" : {
+	"body": {
+	"query": "{ tweets {text} }"
+	}
+}
+}
