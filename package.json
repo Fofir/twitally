@@ -13,7 +13,7 @@
     "client": "cd app && npm start",
     "server": "NODE_ENV=dev nodemon foundation/dev-server --exec babel-node --ignore 'app/*'",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:client": "cd app && npm run build",
+    "build:client": "NODE_ENV=production cd app && env-cmd ../foundation/environment/security.env.prod npm run build",
     "deploy:client": "npm run build:client && aws s3 sync app/build s3://twitally-client/",
     "build:api": "NODE_ENV=production babel --out-dir='api/graphql' --ignore='__tests__/*' ./graphql",
     "build:api:node_modules": "cd api && npm install && cd ..",
@@ -34,6 +34,7 @@
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-0": "^6.16.0",
     "body-parser": "^1.15.2",
+    "env-cmd": "^2.2.0",
     "express": "^4.14.0",
     "nodemon": "^1.11.0",
     "path": "^0.12.7"
