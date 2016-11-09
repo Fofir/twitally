@@ -3,11 +3,33 @@ import { connect } from 'react-redux';
 import actions from '../actions';
 
 class Tweets extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      q: props.q
+    }
+  }
+
+  onInputChange = (evt) => {
+    this.setState({ q: evt.target.value });
+  } 
+
+  onSubmit = (evt) => {
+    evt.preventDefault();
+    this.props.updateQuery( this.state.q );
+  }
+
   componentDidMount() {
     const { fetchTweets, q, resultType } = this.props;
     fetchTweets(q, resultType);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.q !== nextProps.q) {
+      this.props.fetchTweets(nextProps.q, nextProps.resultType);
+    }
+  }
+ 
   render() {
     const { tally, q } = this.props;
 
@@ -20,6 +42,26 @@ class Tweets extends Component {
             <h1>Twitally <small>tallying vote for {q}</small></h1>
           </div>
         </div>
+        <hr />
+        <div className="row">
+          <div className="col-md-12">
+            <form onSubmit={this.onSubmit} className="form-inline">
+              <div className="form-group">
+              <label htmlFor="q">Query:</label>
+              <input
+                type="text"
+                onChange={this.onInputChange}
+                value={this.state.q}
+                className="form-control"
+                style={{ marginLeft: '5px'}}
+                name="q"
+                />
+              </div>
+              <button className="btn btn-primary" style={{ marginLeft: '5px'}}>update</button>
+            </form>
+          </div>
+        </div>
+        <hr />
         {tallyKeys.length < 1 && <div className="well well-sm">Sorry, no latest tweets with with {q}</div>}
         <div className="row">
           <div className="col-md-12"> 
@@ -46,6 +88,7 @@ Tweets.propTypes = {
   tally: PropTypes.object.isRequired, // eslint-disable-line
   isLoading: PropTypes.bool.isRequired,
   fetchTweets: PropTypes.func.isRequired,
+  updateQuery: PropTypes.func.isRequired,
 };
 
 const tallyTweets = (tweets, q) => tweets.reduce((tally, tweet) => {

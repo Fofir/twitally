@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const actionTypes = {
+  TWEETS_UPDATE_QUERY: 'TWEETS_UPDATE_QUERY',
   TWEETS_FETCH_REQUEST: 'TWEETS_FETCH_REQUEST',
   TWEETS_FETCH_SUCCESS: 'TWEETS_FETCH_SUCCESS',
   TWEETS_FETCH_FAILURE: 'TWEETS_FETCH_FAILURE',
@@ -10,6 +11,13 @@ const headers = {
   Accept: 'application/json',
   'Content-Type': 'application/json',
 };
+
+export function updateQuery(q) {
+  return {
+    type: 'TWEETS_UPDATE_QUERY',
+    payload : { q }
+  }
+}
 
 export function fetchTweets(q, resultType) {
   return dispatch => {
@@ -40,4 +48,5 @@ export function fetchTweets(q, resultType) {
 
 export default {
   fetchTweets,
+  updateQuery,
 };

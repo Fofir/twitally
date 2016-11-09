@@ -8,6 +8,7 @@ const defaultState = {
 };
 
 const actionMap = {
+  [actionTypes.TWEETS_UPDATE_QUERY]: (state, action) => ({ ...state, q: action.payload.q}),
   [actionTypes.TWEETS_FETCH_REQUEST]: (state) => ({ ...state, isLoading: true }),
   [actionTypes.TWEETS_FETCH_FAILURE]: (state) => ({ ...state, isLoading: false }),
   [actionTypes.TWEETS_FETCH_SUCCESS]: (state, action) => ({ ...state, isLoading: false, data: action.payload }),
