@@ -33,8 +33,6 @@ class Tweets extends Component {
   render() {
     const { tally, q } = this.props;
 
-    const tallyKeys = Object.keys(tally);
-
     return (
       <div className="container">
         <div className="row">
@@ -62,10 +60,10 @@ class Tweets extends Component {
           </div>
         </div>
         <hr />
-        {tallyKeys.length < 1 && <div className="well well-sm">Sorry, no latest tweets with with {q}</div>}
+        {tally.length < 1 && <div className="well well-sm">Sorry, no latest tweets with with {q}</div>}
         <div className="row">
           <div className="col-md-12"> 
-            {tallyKeys.length > 0 && 
+            {tally.length > 0 && 
               <table className="table table-striped">
               <thead>
                 <tr>
@@ -74,7 +72,7 @@ class Tweets extends Component {
                 </tr>
               </thead>
               <tbody>
-                {tallyKeys.map(vote => <tr key={vote}><td>{vote}</td><td>{tally[vote]}</td></tr>)}
+                {tally.map(({ key, votes }) => <tr key={key}><td>{key}</td><td>{votes}</td></tr>)}
               </tbody>
             </table>}
           </div>
@@ -85,11 +83,23 @@ class Tweets extends Component {
 }
 
 Tweets.propTypes = {
-  tally: PropTypes.object.isRequired, // eslint-disable-line
+  tally: PropTypes.array.isRequired,
   isLoading: PropTypes.bool.isRequired,
   fetchTweets: PropTypes.func.isRequired,
   updateQuery: PropTypes.func.isRequired,
 };
+
+const sortTally = tally => {
+  return Object.keys(tally).sort((a,b) => {
+    if (tally[a] > tally[b]) {
+      return -1;
+    } else if (tally[b] > tally[a]) {
+      return 1;
+    }
+
+    return 0;
+  }).map(key => ({ votes: tally[key], key }));
+}
 
 const tallyTweets = (tweets, q) => tweets.reduce((tally, tweet) => {
   const update = { ...tally };
@@ -112,7 +122,7 @@ const mapStateToProps = state => ({
   isLoading: state.isLoading,
   q: state.q,
   resultType: state.resultType,
-  tally: tallyTweets(state.data, state.q),
+  tally: sortTally(tallyTweets(state.data, state.q)),
 });
 
 export default connect(mapStateToProps, actions)(Tweets);
